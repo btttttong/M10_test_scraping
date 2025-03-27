@@ -1,0 +1,12 @@
+# GCP Credentials & Secrets
+key.json
+.env
+
+# Local Dev Tools
+geckodriver
+venv/
+__pycache__/
+*.pyc
+
+# Python Bytecode
+*.py[cod]
