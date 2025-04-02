@@ -1,13 +1,14 @@
-import os, time, json
+from flask import Flask, request
+import os, json
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from google.cloud import storage
-from datetime import datetime
 from datetime import datetime, timezone
+
+app = Flask(__name__)
 
 PROJECT_ID = os.getenv("PROJECT_ID")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
@@ -16,7 +17,9 @@ GCS_PATH = f"scraped_data/amazon_data_{datetime.now(timezone.utc).isoformat()}.j
 
 def scrape_to_json():
     service = Service("/usr/local/bin/geckodriver")
-    driver = webdriver.Firefox(service=service)
+    options = webdriver.FirefoxOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(service=service, options=options)
     driver.get("https://www.amazon.com/s?k=IELTS+books")
 
     WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState") == "complete")
@@ -48,7 +51,8 @@ def upload_to_gcs():
     blob.upload_from_filename(JSON_FILENAME)
     print(f"✅ Uploaded to GCS: gs://{BUCKET_NAME}/{GCS_PATH}")
 
-def main(request=None):
+@app.route("/", methods=["POST"])
+def run_pipeline():
     scrape_to_json()
     upload_to_gcs()
-    return "✅ Scraped and uploaded JSON to GCS"
+    return "✅ Scraped and uploaded JSON to GCS", 200
