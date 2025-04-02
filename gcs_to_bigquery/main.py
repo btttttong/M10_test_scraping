@@ -1,27 +1,26 @@
 import os, json
-from google.cloud import bigquery, storage
+from google.cloud import storage, bigquery
 
-PROJECT_ID = os.getenv("PROJECT_ID")
-DATASET_ID = os.getenv("DATASET_ID")
-TABLE_ID = os.getenv("TABLE_ID")
+def load_json_to_bq(event, context):
+    bucket_name = event['bucket']
+    file_name = event['name']
 
-def main(request):
-    request_json = request.get_json()
-    bucket_name = request_json["bucket"]
-    file_name = request_json["name"]
+    if not file_name.endswith('.json'):
+        print("Not a JSON file, skipping.")
+        return
 
-    storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket_name)
+    client = storage.Client()
+    bq_client = bigquery.Client()
+
+    bucket = client.bucket(bucket_name)
     blob = bucket.blob(file_name)
-    content = blob.download_as_text()
-    records = json.loads(content)
+    contents = blob.download_as_text()
+    data = json.loads(contents)
 
-    client = bigquery.Client()
-    table_ref = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}"
+    table_id = os.environ["BQ_TABLE_ID"]  # format: project.dataset.table
 
-    errors = client.insert_rows_json(table_ref, records)
+    errors = bq_client.insert_rows_json(table_id, data)
     if errors:
-        print(f"❌ Errors occurred: {errors}")
+        print("Errors:", errors)
     else:
-        print(f"✅ Loaded {len(records)} records to {table_ref}")
-    return "✅ JSON loaded to BigQuery"
+        print("✅ Data loaded into BigQuery")
