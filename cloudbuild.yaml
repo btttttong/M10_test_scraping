@@ -39,3 +39,7 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/extract-to-gcs'
   - 'gcr.io/$PROJECT_ID/gcs-to-bigquery'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  
