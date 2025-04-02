@@ -3,7 +3,7 @@ substitutions:
 
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/extract-to-gcs', '--file=extract_to_gcs/Dockerfile', 'extract_to_gcs']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/extract-to-gcs', '--file=./extract_to_gcs/Dockerfile', './extract_to_gcs']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/extract-to-gcs']
@@ -20,7 +20,7 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcs-to-bigquery', '--file=gcs_to_bigquery/Dockerfile', 'gcs_to_bigquery']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcs-to-bigquery', '--file=./gcs_to_bigquery/Dockerfile', './gcs_to_bigquery']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/gcs-to-bigquery']
