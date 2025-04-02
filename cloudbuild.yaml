@@ -16,12 +16,7 @@ steps:
     ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/gcs-to-bigquery'
-      - '--file=gcs_to_bigquery/Dockerfile'
-      - '.'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gcs-to-bigquery', '--file=./gcs_to_bigquery/Dockerfile', './gcs_to_bigquery']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/gcs-to-bigquery']
@@ -35,6 +30,7 @@ steps:
       '--platform', 'managed',
       '--no-allow-unauthenticated'
     ]
+
 images:
   - 'gcr.io/$PROJECT_ID/extract-to-gcs'
   - 'gcr.io/$PROJECT_ID/gcs-to-bigquery'
