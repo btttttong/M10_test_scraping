@@ -7,11 +7,12 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from google.cloud import storage
 from datetime import datetime
+from datetime import datetime, timezone
 
 PROJECT_ID = os.getenv("PROJECT_ID")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 JSON_FILENAME = "/tmp/amazon_data.json"
-GCS_PATH = f"scraped_data/amazon_data_{datetime.utcnow().isoformat()}.json"
+GCS_PATH = f"scraped_data/amazon_data_{datetime.now(timezone.utc).isoformat()}.json"
 
 def scrape_to_json():
     service = Service("/usr/local/bin/geckodriver")
