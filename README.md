@@ -26,9 +26,11 @@ Before you begin, make sure you have:
 ## 📥 Clone This Repo
 
 ```bash
-git clone [https://github.com/btttttong/M10_test_scraping.git]
-cd to repo
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
 ```
+
+Replace the repo link with your own if sharing publicly.
 
 ---
 
