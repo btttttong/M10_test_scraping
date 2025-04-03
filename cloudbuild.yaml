@@ -1,5 +1,7 @@
 substitutions:
   _BUCKET_NAME: ""  # You can override this from the trigger
+  options:
+  logging: CLOUD_LOGGING_ONLY
 
 steps:
   # Build Extract-to-GCS container
