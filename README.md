@@ -6,6 +6,34 @@ This project deploys two Cloud Run services using Cloud Build:
 
 ---
 
+## ✅ Prerequisites
+
+Before you begin, make sure you have:
+
+- A Google Cloud project with billing enabled
+- A GCS bucket already created
+- A BigQuery dataset and table ready (or plan to create them)
+- Enabled these APIs:
+  - Cloud Run
+  - Cloud Build
+  - Artifact Registry
+  - BigQuery
+  - Cloud Storage
+- (Optional) Git and Cloud SDK installed **OR** use [Google Cloud Shell](https://shell.cloud.google.com)
+
+---
+
+## 📥 Clone This Repo
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
+
+Replace the repo link with your own if sharing publicly.
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -25,11 +53,6 @@ This project deploys two Cloud Run services using Cloud Build:
 ---
 
 ## 🚀 Deploy with Cloud Build
-
-Make sure you have:
-- Cloud SDK installed (or use [Cloud Shell](https://shell.cloud.google.com))
-- Billing enabled
-- APIs enabled: Cloud Run, Cloud Build, Artifact Registry
 
 Run this command:
 
