@@ -1,6 +1,7 @@
 substitutions:
   _BUCKET_NAME: ""  # You can override this from the trigger
-  options:
+
+options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:

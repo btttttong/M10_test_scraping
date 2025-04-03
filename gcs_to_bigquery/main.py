@@ -1,26 +1,24 @@
-import os, json
-from google.cloud import storage, bigquery
+from flask import Flask
+import os
+from google.cloud import bigquery, storage
 
-def load_json_to_bq(event, context):
-    bucket_name = event['bucket']
-    file_name = event['name']
+app = Flask(__name__)
 
-    if not file_name.endswith('.json'):
-        print("Not a JSON file, skipping.")
-        return
+@app.route('/')
+def run_job():
+    bucket_name = os.environ.get("BUCKET_NAME")
+    project_id = os.environ.get("PROJECT_ID")
+    dataset_id = os.environ.get("DATASET_ID")
+    table_id = os.environ.get("TABLE_ID")
 
-    client = storage.Client()
-    bq_client = bigquery.Client()
+    # Your logic here (simplified)
+    storage_client = storage.Client()
+    blobs = storage_client.list_blobs(bucket_name)
 
-    bucket = client.bucket(bucket_name)
-    blob = bucket.blob(file_name)
-    contents = blob.download_as_text()
-    data = json.loads(contents)
+    for blob in blobs:
+        print(f"Found file: {blob.name}")
 
-    table_id = os.environ["BQ_TABLE_ID"]  # format: project.dataset.table
+    return "BigQuery load job triggered successfully!"
 
-    errors = bq_client.insert_rows_json(table_id, data)
-    if errors:
-        print("Errors:", errors)
-    else:
-        print("✅ Data loaded into BigQuery")
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
